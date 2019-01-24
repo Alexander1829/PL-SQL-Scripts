@@ -1,0 +1,1 @@
+set serveroutput on -- for DBMS_OUTPUT
