@@ -8,3 +8,6 @@ ALTER TABLE MOBILE.CS_PR_TRANSPORT ADD (
 --поле ID в MOBILE.CS_SLICE_PR Т2 первичный ключ => уникальное   
   REFERENCES MOBILE.CS_SLICE_PR (ID)
   ENABLE VALIDATE);
+
+///Инфо о таблице
+SELECT num_rows FROM all_tables WHERE table_name = 'NSM_MONTH_TRANSACTIONS'
