@@ -9,5 +9,6 @@ ALTER TABLE MOBILE.CS_PR_TRANSPORT ADD (
   REFERENCES MOBILE.CS_SLICE_PR (ID)
   ENABLE VALIDATE);
 
-///Инфо о таблице
+///Инфо о нужной таблице
+///Например количество строк, чтобы не делать SELECT count(1) 
 SELECT num_rows FROM all_tables WHERE table_name = 'NSM_MONTH_TRANSACTIONS'
