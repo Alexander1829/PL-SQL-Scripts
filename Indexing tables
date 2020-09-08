@@ -1,0 +1,1187 @@
+DROP TABLE MOBILE.MT_RESULTS_REPORT CASCADE CONSTRAINTS;
+CREATE TABLE MOBILE.MT_RESULTS_REPORT
+(
+  PERIOD         NUMBER,
+  POINTCODE      VARCHAR2(11 CHAR),
+  EMPLOYEE_NUM   VARCHAR2(10 CHAR),
+  FULL_NAME      VARCHAR2(240 CHAR),
+  JOB_NAME       VARCHAR2(350 BYTE),
+  MARK_ID        NUMBER,
+  VARIABLE_CODE  VARCHAR2(1000 BYTE),
+  RESULT_VALUE   NUMBER,
+  SCHEME_ID      NUMBER,
+  VARIABLE_ID    NUMBER,
+  MONTH_DATE     DATE
+)
+NOCOMPRESS 
+TABLESPACE MOBILE_TBS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+           )
+PARTITION BY RANGE (PERIOD)
+INTERVAL( 1)
+(  
+  PARTITION OLD_VALUES VALUES LESS THAN (201501)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201903)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201904)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201905)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201906)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201907)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201908)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201909)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201910)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201911)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201912)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (201913)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202002)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202003)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202004)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202005)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202006)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202007)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202008)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202009)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION VALUES LESS THAN (202010)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               )
+)
+NOCACHE
+MONITORING;
+
+
+CREATE INDEX MOBILE.IDX1_MT_RESULTS_REPORT ON MOBILE.MT_RESULTS_REPORT
+(EMPLOYEE_NUM, VARIABLE_CODE)
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION OLD_VALUES
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               )
+);
+
+CREATE INDEX MOBILE.IDX_MT_RESULTS_REPORT ON MOBILE.MT_RESULTS_REPORT
+(POINTCODE, VARIABLE_CODE)
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION OLD_VALUES
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               )
+);
+
+CREATE INDEX MOBILE.MT_RESULTS_REPORT_IDX2 ON MOBILE.MT_RESULTS_REPORT
+(POINTCODE, EMPLOYEE_NUM, VARIABLE_CODE, MARK_ID)
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION OLD_VALUES
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               ),  
+  PARTITION
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE MOBILE_TBS
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+               )
+);
+CREATE OR REPLACE SYNONYM MOBILE_ACCESS.MT_RESULTS_REPORT FOR MOBILE.MT_RESULTS_REPORT;
+
+GRANT SELECT ON MOBILE.MT_RESULTS_REPORT TO MOBILE_ACCESS;
+GRANT SELECT ON MOBILE.MT_RESULTS_REPORT TO MOBILE_ACCESS_VP WITH GRANT OPTION;
+
+--Clobal temp table
+DROP TABLE MOBILE.MT_RESULTS_REPORT_SRC CASCADE CONSTRAINTS;
+CREATE GLOBAL TEMPORARY TABLE MOBILE.MT_RESULTS_REPORT_SRC
+(
+  PERIOD         NUMBER,
+  POINTCODE      VARCHAR2(11 CHAR),
+  EMPLOYEE_NUM   VARCHAR2(10 CHAR),
+  FULL_NAME      VARCHAR2(240 CHAR),
+  JOB_NAME       VARCHAR2(1000 BYTE),
+  MARK_ID        NUMBER,
+  VARIABLE_CODE  VARCHAR2(1000 BYTE),
+  RESULT_VALUE   NUMBER,
+  SCHEME_ID      NUMBER,
+  VARIABLE_ID    NUMBER,
+  MONTH_DATE     DATE
+)
+ON COMMIT PRESERVE ROWS
+NOCACHE;
