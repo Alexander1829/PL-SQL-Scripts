@@ -1,0 +1,168 @@
+DROP VIEW MOBILE.V_SITE;
+
+CREATE OR REPLACE FORCE VIEW MOBILE.V_SITE
+(
+    SITE_ID,
+    D018_CODE_1C,
+    D018_CODE_MDM,
+    D006_NAME,
+    D006_MTS_MACROREGION,
+    D006_DIVISION,
+    D006_REGION,
+    D006_ADDRESS_LINE,
+    D006_EMAIL,
+    D006_PHONE,
+    D006_BRAND,
+    SLS_DIRECTOR,
+    SLS_DIRECTOR_AST,
+    MANAGER,
+    BRIGADIER,
+    UM,
+    SLS_DIRECTOR_NUM,
+    SLS_DIRECTOR_AST_NUM,
+    MANAGER_NUM,
+    BRIGADIER_NUM,
+    UM_NUM
+)
+BEQUEATH DEFINER
+AS
+    SELECT s.site_id,
+           sb.d018_code_1c,
+           sb.d018_code_mdm,
+           d006_name,
+           d006_mts_macroregion,
+           d006_division,
+           d006_region,
+           d006_address_line,
+           d006_email,
+           d006_phone,
+           d006_brand,
+           /*(select max(p.d001_full_name)
+               from dwh.d005_employee e, personal_data.d001_person_oebs p
+              where p.employee_num = decode(instr(e.code_timesheet_mts, '-'), 0, e.code_timesheet_mts,
+                                            substr(e.code_timesheet_mts, 0, instr(e.code_timesheet_mts, '-') - 1))
+                and e.person_id = person_id_sls_director)*/
+           '##########'
+               sls_director,
+           /*(select max(p.d001_full_name)
+               from dwh.d005_employee e, personal_data.d001_person_oebs p
+              where p.employee_num = decode(instr(e.code_timesheet_mts, '-'), 0, e.code_timesheet_mts,
+                                            substr(e.code_timesheet_mts, 0, instr(e.code_timesheet_mts, '-') - 1))
+                and e.person_id = person_id_sls_director_ast)*/
+           '##########'
+               sls_director_ast,
+           /*(select max(p.d001_full_name)
+               from dwh.d005_employee e, personal_data.d001_person_oebs p
+              where p.employee_num = decode(instr(e.code_timesheet_mts, '-'), 0, e.code_timesheet_mts,
+                                            substr(e.code_timesheet_mts, 0, instr(e.code_timesheet_mts, '-') - 1))
+                and e.person_id = person_id_manager)*/
+           '##########'
+               manager,
+           /*(select max(full_name)
+               from retail_bonus.f018_superviser sv
+              where sv.site_code = sb.d018_code_1c
+                and code_role = 'BR'
+                and effective_start_date <= trunc(sysdate)
+                and (effective_end_date is null or effective_end_date >= trunc(sysdate))
+                and sv.effective_start_date =
+                    (select max(svd.effective_start_date)
+                       from retail_bonus.f018_superviser svd
+                      where svd.site_code = sv.site_code
+                        and svd.code_role = sv.code_role
+                        and svd.effective_start_date <= trunc(sysdate)
+                        and (svd.effective_end_date is null or svd.effective_end_date >= trunc(sysdate))))*/
+           '##########'
+               brigadier,
+           /*(select max(full_name)
+               from retail_bonus.f018_superviser sv
+              where sv.site_code = sb.d018_code_1c
+                and code_role = 'UM'
+                and effective_start_date <= trunc(sysdate)
+                and (effective_end_date is null or effective_end_date >= trunc(sysdate))
+                and sv.effective_start_date =
+                    (select max(svd.effective_start_date)
+                       from retail_bonus.f018_superviser svd
+                      where svd.site_code = sv.site_code
+                        and svd.code_role = sv.code_role
+                        and svd.effective_start_date <= trunc(sysdate)
+                        and (svd.effective_end_date is null or svd.effective_end_date >= trunc(sysdate))))*/
+           '##########'
+               um,
+           (SELECT MAX (p.employee_num)
+              FROM dwh.d005_employee e, personal_data.d001_person_oebs p
+             WHERE     p.employee_num =
+                       DECODE (
+                           INSTR (e.code_timesheet_mts, '-'),
+                           0, e.code_timesheet_mts,
+                           SUBSTR (e.code_timesheet_mts,
+                                   0,
+                                   INSTR (e.code_timesheet_mts, '-') - 1))
+                   AND e.person_id = person_id_sls_director)
+               sls_director_num,
+           (SELECT MAX (p.employee_num)
+              FROM dwh.d005_employee e, personal_data.d001_person_oebs p
+             WHERE     p.employee_num =
+                       DECODE (
+                           INSTR (e.code_timesheet_mts, '-'),
+                           0, e.code_timesheet_mts,
+                           SUBSTR (e.code_timesheet_mts,
+                                   0,
+                                   INSTR (e.code_timesheet_mts, '-') - 1))
+                   AND e.person_id = person_id_sls_director_ast)
+               sls_director_ast_num,
+           (SELECT MAX (p.employee_num)
+              FROM dwh.d005_employee e, personal_data.d001_person_oebs p
+             WHERE     p.employee_num =
+                       DECODE (
+                           INSTR (e.code_timesheet_mts, '-'),
+                           0, e.code_timesheet_mts,
+                           SUBSTR (e.code_timesheet_mts,
+                                   0,
+                                   INSTR (e.code_timesheet_mts, '-') - 1))
+                   AND e.person_id = person_id_manager)
+               manager_num,
+           (SELECT MAX (employee_number)
+              FROM retail_bonus.f018_superviser sv
+             WHERE     sv.site_code = sb.d018_code_1c
+                   AND code_role = 'BR'
+                   AND effective_start_date <= TRUNC (SYSDATE)
+                   AND (   effective_end_date IS NULL
+                        OR effective_end_date >= TRUNC (SYSDATE))
+                   AND sv.effective_start_date =
+                       (SELECT MAX (svd.effective_start_date)
+                          FROM retail_bonus.f018_superviser svd
+                         WHERE     svd.site_code = sv.site_code
+                               AND svd.code_role = sv.code_role
+                               AND svd.effective_start_date <=
+                                   TRUNC (SYSDATE)
+                               AND (   svd.effective_end_date IS NULL
+                                    OR svd.effective_end_date >=
+                                       TRUNC (SYSDATE))))
+               brigadier_num,
+           (SELECT MAX (employee_number)
+              FROM retail_bonus.f018_superviser sv
+             WHERE     sv.site_code = sb.d018_code_1c
+                   AND code_role = 'UM'
+                   AND effective_start_date <= TRUNC (SYSDATE)
+                   AND (   effective_end_date IS NULL
+                        OR effective_end_date >= TRUNC (SYSDATE))
+                   AND sv.effective_start_date =
+                       (SELECT MAX (svd.effective_start_date)
+                          FROM retail_bonus.f018_superviser svd
+                         WHERE     svd.site_code = sv.site_code
+                               AND svd.code_role = sv.code_role
+                               AND svd.effective_start_date <=
+                                   TRUNC (SYSDATE)
+                               AND (   svd.effective_end_date IS NULL
+                                    OR svd.effective_end_date >=
+                                       TRUNC (SYSDATE))))
+               um_num
+      FROM dwh.d006_site s, dwh.d018_subsite sb
+     WHERE     d006_is_deleted = 'N'
+           AND s.site_id = sb.site_id
+           AND s.d006_type = 'Офис продаж'
+           AND d018_code_1c IS NOT NULL;
+
+
+CREATE OR REPLACE SYNONYM MOBILE_ACCESS_VP.V_SITE FOR MOBILE.V_SITE;
+GRANT SELECT ON MOBILE.V_SITE TO MOBILE_ACCESS_VP;
