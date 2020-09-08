@@ -1,0 +1,430 @@
+--Schedul. Programs.   "PRG_BRIEF_REPORT_REFRESH(!)" --обёртка над процедурой MOBILE.PKG_MOBILE_SYNC.START_SYNC
+
+Program Type	STORED_PROCEDURE
+Program Action	MOBILE.PKG_MOBILE_SYNC.START_SYNC
+Number of Arguments	0
+Enabled	TRUE
+Comments	Обновление важных таблиц MOBILE.Table1, ... Должно осуществляться раз в сутки
+--SCRIPT:
+BEGIN  DBMS_SCHEDULER.DROP_PROGRAM (program_name          => 'MOBILE.PRG_BRIEF_REPORT_REFRESH'); END; /
+BEGIN  SYS.DBMS_SCHEDULER.CREATE_PROGRAM
+    (
+      program_name         => 'MOBILE.PRG_BRIEF_REPORT_REFRESH'
+     ,program_type         => 'STORED_PROCEDURE'
+     ,program_action       => 'MOBILE.PKG_MOBILE_SYNC.START_SYNC'
+     ,number_of_arguments  => 0
+     ,enabled              => FALSE
+     ,comments             => NULL
+    );
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'MOBILE.PRG_BRIEF_REPORT_REFRESH');
+END;
+
+
+
+--Schedul. Job для Schedul. Program
+--SCRIPT:
+BEGIN  SYS.DBMS_SCHEDULER.DROP_JOB (job_name  => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'); END;/
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'
+      ,schedule_name   => 'MOBILE.EVERY_5_MIN'
+      ,program_name    => 'MOBILE.PRG_BRIEF_REPORT_REFRESH(!)'
+      ,comments        => NULL
+    );
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'
+     ,attribute => 'RESTARTABLE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'
+     ,attribute => 'LOGGING_LEVEL'
+     ,value     => SYS.DBMS_SCHEDULER.LOGGING_OFF);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'
+     ,attribute => 'MAX_FAILURES');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'MOBILE.JOB_BRIEF_REPORT_REFRESH'
+     ,attribute => 'MAX_RUNS');
+     --... Другие аттрибуты
+END;     
+
+--Schedul.Schedules
+BEGIN  SYS.DBMS_SCHEDULER.DROP_SCHEDULE (schedule_name  => 'MOBILE.EVERY_DAY');END;/
+BEGIN  SYS.DBMS_SCHEDULER.CREATE_SCHEDULE
+    (
+      schedule_name    => 'MOBILE.EVERY_DAY'
+     ,start_date       => NULL
+     ,repeat_interval  => 'FREQ=DAILY;INTERVAL=1;BYHOUR=0;BYMINUTE=0;BYSECOND=0'
+     ,end_date         => NULL
+     ,comments         => NULL
+    );
+END;
+
+BEGIN  SYS.DBMS_SCHEDULER.DROP_SCHEDULE (schedule_name  => 'MOBILE.EVERY_5_MIN');END;/
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_SCHEDULE
+    (
+      schedule_name    => 'MOBILE.EVERY_5_MIN'
+     ,start_date       => TO_TIMESTAMP_TZ('2018/09/13 14:00:00.000000 +03:00','yyyy/mm/dd hh24:mi:ss.ff tzh:tzm')
+     ,repeat_interval  => 'FREQ=MINUTELY;INTERVAL=5;BYSECOND=0'
+     ,end_date         => NULL
+     ,comments         => NULL
+    );
+END;
+
+
+
+CREATE OR REPLACE PACKAGE MOBILE.PKG_MOBILE_SYNC
+AS
+    v_DateTime  TIMESTAMP;
+    p_CNT       NUMBER;
+    P_MONTH     DATE;
+    p_PERIOD    NUMBER;
+    p_DATE      VARCHAR2(10);
+
+
+    PROCEDURE START_SYNC;
+    PROCEDURE SAVE_LOG (p_PERIOD NUMBER, p_NM VARCHAR2, p_CNT NUMBER, p_DTTIME TIMESTAMP);    
+    PROCEDURE MONTH_TRANSACTIONS_SYNC(p_DATE VARCHAR, p_PERIOD NUMBER);
+    PROCEDURE RESULTS_REPORT_SYNC(p_DATE VARCHAR, p_PERIOD NUMBER);
+    PROCEDURE RESULTS_PROGNOZ_SYNC (p_DATE VARCHAR, p_PERIOD NUMBER);
+    PROCEDURE BRIEF_REPORT_PERS_SYNC(p_PERIOD NUMBER);
+    PROCEDURE BRIEF_REPORT_OP_SYNC(p_PERIOD NUMBER);
+    PROCEDURE NSM_SPEC_HOME_SCREEN_SYNC (p_PERIOD NUMBER);
+    PROCEDURE VARIABLE_HEADERS_SYNC;
+    PROCEDURE STAFF_CALENDAR_SYNC(P_MONTH DATE, p_PERIOD NUMBER);
+END PKG_MOBILE_SYNC;
+
+
+
+CREATE OR REPLACE PACKAGE BODY MOBILE.PKG_MOBILE_SYNC
+AS
+
+   PROCEDURE START_SYNC
+   IS
+      TmpVar   NUMBER;
+   BEGIN
+      FOR i
+         IN (  SELECT a.P_MONTH
+                     ,TO_NUMBER (TO_CHAR (a.P_MONTH, 'yyyymm')) PERIOD
+                     ,A.END_DATE
+                 FROM (  SELECT L.P_MONTH, MAX (L.END_DATE) END_DATE
+                           FROM MT.MT_CALC_LOG@MT_MOTIVDB1 l
+                          WHERE l.p_transfer_to_rep = 'Y' --AND L.P_MONTH <> DATE '2018-09-01'
+                       GROUP BY L.P_MONTH
+                       MINUS
+                       SELECT L.P_MONTH, L.END_DATE
+                         FROM MT_CALC_LOG l) a
+             ORDER BY a.P_MONTH)
+      LOOP
+         SELECT SYSTIMESTAMP INTO v_DateTime FROM DUAL;
+
+         EXECUTE IMMEDIATE 'TRUNCATE TABLE NSM_MONTH_TRANSACTIONS_SRC';
+
+         SAVE_LOG (p_PERIOD
+                  ,'TRUNCATE TABLE _SRC'
+                  ,0
+                  ,v_DateTime
+                  );
+
+         --COMMIT;
+
+         SELECT TO_DATE (i.PERIOD, 'yyyymm')
+               ,i.PERIOD
+               ,TO_CHAR (i.P_MONTH, 'yyyy-mm-dd')
+           INTO P_MONTH, p_PERIOD, p_DATE
+           FROM DUAL;
+
+         RESULTS_REPORT_SYNC (p_DATE, p_PERIOD);
+         
+         RESULTS_PROGNOZ_SYNC (p_DATE, p_PERIOD);
+
+         BRIEF_REPORT_PERS_SYNC (p_PERIOD);
+
+         BRIEF_REPORT_OP_SYNC (p_PERIOD);
+         
+         NSM_SPEC_HOME_SCREEN_SYNC (p_PERIOD);
+
+         VARIABLE_HEADERS_SYNC;
+
+         STAFF_CALENDAR_SYNC (P_MONTH, p_PERIOD);
+
+         MONTH_TRANSACTIONS_SYNC (p_DATE, p_PERIOD);
+
+         MERGE INTO MT_CALC_LOG trg
+              USING (SELECT i.P_MONTH, i.END_DATE FROM DUAL)
+                 ON (trg.P_MONTH = i.P_MONTH)
+         WHEN MATCHED
+         THEN
+            UPDATE SET END_DATE = i.END_DATE, INS_DATE = SYSDATE
+         WHEN NOT MATCHED
+         THEN
+            INSERT     (P_MONTH, END_DATE)
+                VALUES (i.P_MONTH, i.END_DATE);
+
+         COMMIT;
+      END LOOP;
+   END;
+   
+     PROCEDURE SAVE_LOG (p_PERIOD    NUMBER
+                      ,p_NM        VARCHAR2
+                      ,p_CNT       NUMBER
+                      ,p_DTTIME    TIMESTAMP
+                      )
+   IS
+   BEGIN
+      INSERT INTO BRIEF_REPORT_REFRESH_LOG (ID
+                                           ,DT
+                                           ,PERIOD
+                                           ,NM
+                                           ,CNT
+                                           ,DURATION
+                                           )
+         SELECT NVL (MAX (ID), 0) + 1
+               ,SYSDATE
+               ,p_PERIOD
+               ,p_NM
+               ,p_CNT
+               ,TO_CHAR (SYSTIMESTAMP - p_DTTIME)
+           FROM BRIEF_REPORT_REFRESH_LOG;
+   END SAVE_LOG;
+
+   PROCEDURE MONTH_TRANSACTIONS_SYNC (p_DATE VARCHAR, p_PERIOD NUMBER)
+   IS
+   BEGIN
+      SELECT SYSTIMESTAMP INTO v_DateTime FROM DUAL;
+
+      --        INSERT INTO /*+ APPEND PARALLEL(10)*/
+      --                    NSM_MONTH_TRANSACTIONS_SRC (PERIOD,
+      --                                                DT,
+      --                                                POINTCODE,
+      --                                                EMPLOYEE_NUM,
+      --                                                ARTICLE,
+      --                                                FULL_NAME,
+      --                                                TXN_TYPE,
+      --                                                VARIABLE_CODE,
+      --                                                RESULT_VALUE,
+      --                                                RTL_TXN_LI_ID)
+
+      EXECUTE IMMEDIATE 'DROP TABLE NSM_MONTH_TRANSACTIONS_SRC';
+
+      EXECUTE IMMEDIATE
+         '
+            CREATE GLOBAL TEMPORARY TABLE NSM_MONTH_TRANSACTIONS_SRC
+            ON COMMIT PRESERVE ROWS
+            NOCACHE
+            AS
+            SELECT 
+                   TO_NUMBER (TO_CHAR (tdr.Period, ''yyyymm''))
+                       PERIOD,
+                   mmt.F007_TS
+                       DT,
+                   MO.D018_CODE_1C
+                       POINTCODE,
+                   NVL (EMP.D005_CODE_TIMESHEET, -1)
+                       EMPLOYEE_NUM,
+                   mmt.D001_Code_1c
+                       ARTICLE,
+                   NVL (mmt.D001_price_label, mmt.d001_full_name)
+                       FULL_NAME,
+                   mmt.F008_TXN_TYPE
+                       TXN_TYPE,
+                   tdr.Variable_code,
+                   tdr.Result_value,
+                   MMT.RTL_TXN_LI_ID
+              FROM MT.MT_MONTH_TRANSACTIONS@MT_MOTIVDB1  mmt
+                   JOIN MT.MT_TRANSACTION_DETAILS_REP@MT_MOTIVDB1 tdr
+                       ON     TDR.RTL_TXN_LI_ID = MMT.RTL_TXN_LI_ID
+                          AND mmt.F008_DT >= DATE'''
+         || p_DATE
+         || '''
+                          AND mmt.F008_DT < LAST_DAY (DATE'''
+         || p_DATE
+         || ''') + 1
+                          AND tdr.PERIOD >= DATE'''
+         || p_DATE
+         || '''
+                          AND tdr.PERIOD < LAST_DAY (DATE'''
+         || p_DATE
+         || ''') + 1
+                   JOIN MT.MT_MONTH_OP2@MT_MOTIVDB1 mo
+                       ON MO.SUBSITE_ID = mmt.Subsite_ID
+                   JOIN DWH.D005_EMPLOYEE emp
+                       ON EMP.EMPLOYEE_ID = TDR.PERSON_ID';
+
+      p_CNT := SQL%ROWCOUNT;
+
+      SAVE_LOG (p_PERIOD
+               ,'INSERT NSM_MONTH_TRANSACTIONS_SRC'
+               ,p_CNT
+               ,v_DateTime
+               );
+
+      IF p_CNT > 0
+      THEN
+         SELECT SYSDATE INTO v_DateTime FROM DUAL;
+
+         DELETE FROM NSM_MONTH_TRANSACTIONS
+               WHERE RTL_TXN_LI_ID IN
+                        (SELECT RTL_TXN_LI_ID
+                           FROM (SELECT *
+                                   FROM NSM_MONTH_TRANSACTIONS
+                                  WHERE period = p_PERIOD
+                                 MINUS
+                                 SELECT *
+                                   FROM NSM_MONTH_TRANSACTIONS_SRC));
+
+         p_CNT := SQL%ROWCOUNT;
+
+
+         SAVE_LOG (p_PERIOD
+                  ,'DELETE NSM_MONTH_TRANSACTIONS'
+                  ,p_CNT
+                  ,v_DateTime
+                  );
+
+
+         SELECT SYSDATE INTO v_DateTime FROM DUAL;
+
+         INSERT INTO NSM_MONTH_TRANSACTIONS (PERIOD
+                                            ,DT
+                                            ,POINTCODE
+                                            ,EMPLOYEE_NUM
+                                            ,ARTICLE
+                                            ,FULL_NAME
+                                            ,TXN_TYPE
+                                            ,VARIABLE_CODE
+                                            ,RESULT_VALUE
+                                            ,RTL_TXN_LI_ID
+                                            )
+            SELECT * FROM NSM_MONTH_TRANSACTIONS_SRC
+            MINUS
+            SELECT *
+              FROM NSM_MONTH_TRANSACTIONS
+             WHERE period = p_PERIOD;
+
+         p_CNT := SQL%ROWCOUNT;
+
+         SAVE_LOG (p_PERIOD
+                  ,'INSERT NSM_MONTH_TRANSACTIONS'
+                  ,p_CNT
+                  ,v_DateTime
+                  );
+      END IF;
+
+      COMMIT;
+   END MONTH_TRANSACTIONS_SYNC;
+
+   PROCEDURE RESULTS_REPORT_SYNC (p_DATE VARCHAR, p_PERIOD NUMBER)
+   IS
+   BEGIN
+      SELECT SYSDATE INTO v_DateTime FROM DUAL;
+
+      BEGIN
+          EXECUTE IMMEDIATE 'DROP TABLE MT_RESULTS_REPORT_SRC';
+      EXCEPTION
+      	WHEN OTHERS THEN NULL;  	
+      END;
+
+
+      EXECUTE IMMEDIATE
+         '
+            CREATE GLOBAL TEMPORARY TABLE MT_RESULTS_REPORT_SRC
+            ON COMMIT PRESERVE ROWS
+            NOCACHE
+            AS
+         SELECT      /*+ PARALLEL(5)*/
+               DISTINCT
+                TO_NUMBER (TO_CHAR (RR.MONTH_DATE, ''yyyymm'')) PERIOD
+               ,MO.D018_CODE_1C POINTCODE
+               ,NVL (EMP.D005_CODE_TIMESHEET, ''0'') EMPLOYEE_NUM
+               ,PO.D001_FULL_NAME FULL_NAME
+               ,NVL2 (rr.MARK_ID, jobs.MARK_NAME, NULL) JOB_NAME
+               ,DECODE (rr.MARK_ID,  1, 2,  2, 1,  rr.MARK_ID) MARK_ID
+               ,rr.VARIABLE_CODE
+               ,NVL (ROUND (RR.RESULT_VALUE, 4), 0) RESULT_VALUE 
+               ,rr.SCHEME_ID
+               ,rr.VARIABLE_ID
+               ,rr.MONTH_DATE
+           FROM MT.MT_RESULTS_REPORT@MT_MOTIVDB1 rr
+                LEFT JOIN DWH.D005_EMPLOYEE emp
+                   ON EMP.EMPLOYEE_ID = RR.PERSON_ID
+                LEFT JOIN MT.MT_MONTH_OP2@MT_MOTIVDB1 mo
+                   ON MO.SUBSITE_ID = RR.ORGANIZATION_ID
+                LEFT JOIN PERSONAL_DATA.D001_PERSON_OEBS po
+                   ON PO.EMPLOYEE_NUM =
+                         DECODE (
+                            SIGN (INSTR (EMP.CODE_TIMESHEET_MTS, ''-''))
+                           ,1, SUBSTR (
+                                  EMP.CODE_TIMESHEET_MTS
+                                 ,1
+                                 ,INSTR (EMP.CODE_TIMESHEET_MTS, ''-'') - 1)
+                           ,0, EMP.CODE_TIMESHEET_MTS)
+                JOIN mt.mt_marks@MT_MOTIVDB1 jobs
+                   ON (jobs.mark_id = rr.mark_id OR rr.mark_id IS NULL)
+                      AND jobs.SCHEME_ID = rr.SCHEME_ID
+          WHERE     rr.MONTH_DATE >= DATE'''
+         || p_DATE
+         || '''
+                AND rr.MONTH_DATE < LAST_DAY (DATE'''
+         || p_DATE
+         || ''') + 1
+                AND rr.VARIABLE_ID <> -323
+                ';
+
+      p_CNT := SQL%ROWCOUNT;
+
+      SAVE_LOG (p_PERIOD
+               ,'INSERT MT_RESULTS_REPORT_SRC'
+               ,p_CNT
+               ,v_DateTime
+               );
+
+      COMMIT;
+
+      IF p_CNT > 0
+      THEN
+         SELECT SYSDATE INTO v_DateTime FROM DUAL;
+
+         DELETE FROM mt_results_report
+               WHERE PERIOD = p_PERIOD;
+
+         p_CNT := SQL%ROWCOUNT;
+
+         SAVE_LOG (p_PERIOD
+                  ,'DELETE MT_RESULTS_REPORT'
+                  ,p_CNT
+                  ,v_DateTime
+                  );
+
+         SELECT SYSDATE INTO v_DateTime FROM DUAL;
+execute immediate '
+         INSERT INTO MT_RESULTS_REPORT (PERIOD
+                                       ,POINTCODE
+                                       ,EMPLOYEE_NUM
+                                       ,FULL_NAME
+                                       ,JOB_NAME
+                                       ,MARK_ID
+                                       ,VARIABLE_CODE
+                                       ,RESULT_VALUE
+                                       ,SCHEME_ID
+                                       ,VARIABLE_ID
+                                       ,MONTH_DATE
+                                       )
+            SELECT * FROM MT_RESULTS_REPORT_SRC'
+            ;
+
+         p_CNT := SQL%ROWCOUNT;
+
+         SAVE_LOG (p_PERIOD
+                  ,'INSERT MT_RESULTS_REPORT'
+                  ,p_CNT
+                  ,v_DateTime
+                  );
+      END IF;
+
+      COMMIT;
+   END RESULTS_REPORT_SYNC;
