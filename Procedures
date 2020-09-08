@@ -1,0 +1,53 @@
+--Процедура с курсором
+PROCEDURE GET_EVOLUTION_CETRS (                
+        p_pnumber VARCHAR2,
+        p_is_test_user INT,
+        p_is_betta INT DEFAULT 0,
+        outcur OUT SYS_REFCURSOR       
+    )
+IS      
+BEGIN 
+    IF ( p_is_test_user = 1 ) THEN	    
+        OPEN outcur FOR
+SELECT cert, nominal, dt_end AS dateend, dt_load AS dateload 
+FROM EVOLUTION_CERT 
+WHERE employee_num = p_pnumber and dt_end >= to_date('17.04.2020', 'dd.mm.yyyy');
+    ELSIF ( p_is_test_user = 0 ) THEN      
+        OPEN outcur FOR
+SELECT cert, nominal, dt_end AS dateend, dt_load AS dateload 
+FROM TABLE(PKG_MOBILE.EVOLUTION_GET_CERT(p_pnumber));        
+    END IF;           
+END GET_EVOLUTION_CETRS;
+
+
+--Список виджетов пользователя
+    PROCEDURE GET_USER_WIDGETS(
+        p_login VARCHAR2      
+    )
+IS    
+    v_widgets_row varchar2(100);
+    v_cnt int;
+BEGIN
+
+SELECT count(1)
+INTO v_cnt
+FROM USER_WIDGETS  
+WHERE login = p_login;
+
+IF(v_cnt = 1) THEN
+
+  SELECT widgets_row
+  INTO v_widgets_row
+  FROM USER_WIDGETS  
+  WHERE login = p_login; 
+
+  INSERT INTO HD_USER_INCIDENT_LOG
+  (INCIDENT_ID, INCIDENT_TEXT, LOGIN, PNUMBER, REAL_LOGIN, POINTCODE
+  , LEVEL_1_ID, LEVEL_2_ID, LEVEL_3_ID, LEVEL_4_ID)
+  VALUES
+  (p_incident_id, v_widgets_row, p_login, p_pnumber, p_real_login, p_opcode
+  , p_level_1_id, p_level_2_id, p_level_3_id, p_level_4_id);
+
+  COMMIT;
+
+END IF;
