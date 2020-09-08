@@ -1,0 +1,33 @@
+Oracle SQL, column types:
+
+CREATE TABLE SCHEM1.TABLE1
+(
+  ID               NUMBER                       NOT NULL, 
+  LOGIN            NVARCHAR2(104)               NOT NULL,
+  LOCKED           NUMBER(1)                    NOT NULL, -- аналог bool
+  ISBETA           NUMBER(1)                    NOT NULL,
+  PHONE_NUMBER     NVARCHAR2(16)                NOT NULL,
+  PNUMBER          NVARCHAR2(64),
+  REGISTERED       DATE,
+  NAME             NVARCHAR2(512),
+  ROLE             INTEGER                      NOT NULL,
+  TEST_ACCOUNT_ID  NUMBER  
+);
+COMMENT ON COLUMN SCHEM1.TABLE1.LOGIN IS 'Текст пуша';
+COMMENT ON COLUMN SCHEM1.TABLE1.ROLE IS 'Заголовок пуш';
+COMMENT ON COLUMN SCHEM1.TABLE1.TEST_ACCOUNT_ID IS 'Время, в которое пуш поступил на отправку';
+-----------------
+CREATE TABLE SCHEM1.TABLE2
+(
+  ID             NUMBER,
+  MESSAGE        VARCHAR2(4000 CHAR),
+  API_PATH       NVARCHAR2(40),
+  API_QUERY      NVARCHAR2(1000),
+  API_BODY       VARCHAR2(4000 CHAR),
+  USER_CRITICAL  NUMBER(1),
+  REAL_LOGIN     NVARCHAR2(104),
+  TOKEN          NVARCHAR2(2000),
+  DATE_LOG       TIMESTAMP(6)                   DEFAULT CURRENT_TIMESTAMP
+  DATE_SEND      DATE                           DEFAULT sysdate,
+);
+
