@@ -1,5 +1,3 @@
-/*Задача: Распределения данных по условию. Разложить четные и нечетные значения ID таблицы temp_test_clients 
-в две другие таблицы такой же структуры как изначальная*/
 create table temp_test_clients (id integer);
 
 insert into  temp_test_clients (id) values (0);
@@ -19,10 +17,6 @@ begin
       insert into temp_test_clients_2 (id) values (z.id);
     end if;
   end loop;
+  commit;
 end;  
   
-/* 
-Проверяем результат
-select * from temp_test_clients_1;
-select * from temp_test_clients_2;
-*/
