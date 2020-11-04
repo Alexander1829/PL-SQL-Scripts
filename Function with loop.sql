@@ -1,4 +1,4 @@
-/* Задача: Требуется подсчитать количество вхождений подстроки в строку? */
+/* Р—Р°РґР°С‡Р°: РўСЂРµР±СѓРµС‚СЃСЏ РїРѕРґСЃС‡РёС‚Р°С‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РІС…РѕР¶РґРµРЅРёР№ РїРѕРґСЃС‚СЂРѕРєРё РІ СЃС‚СЂРѕРєСѓ? */
 create /*or replace*/ function f_count_substr (in_string in varchar2
                                           ,in_substring in varchar2) 
 return integer is
@@ -14,8 +14,8 @@ begin
   return v_result;
 end f_count_substr; 
 
-/* Протестируем результат
-select f_count_substr('перерезать', 'ере'),
-       f_count_substr('скакалка', 'ка')
+/* РџСЂРѕС‚РµСЃС‚РёСЂСѓРµРј СЂРµР·СѓР»СЊС‚Р°С‚
+select f_count_substr('РїРµСЂРµСЂРµР·Р°С‚СЊ', 'РµСЂРµ'),
+       f_count_substr('СЃРєР°РєР°Р»РєР°', 'РєР°')
 from dual;
 */

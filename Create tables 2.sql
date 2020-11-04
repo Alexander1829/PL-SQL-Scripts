@@ -127,7 +127,7 @@ NOCOMPRESS
 NOCACHE
 MONITORING;
 
-COMMENT ON TABLE MOBILE.CS_SLICE IS 'РЎРїРёСЃРѕРє РєРѕРЅРєСѓСЂРµРЅС‚РЅС‹С… СЃСЂРµР·РѕРІ';
+COMMENT ON TABLE MOBILE.CS_SLICE IS 'Список конкурентных срезов';
 
 
 CREATE UNIQUE INDEX MOBILE.CS_SLICE_PK ON MOBILE.CS_SLICE
@@ -192,7 +192,7 @@ NOCOMPRESS
 NOCACHE
 MONITORING;
 
-COMMENT ON TABLE MOBILE.CS_SLICE_PR IS 'Р—Р°РїРёСЃРё РѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕРіРѕ С‚РѕС‡РєРё Рѕ РєРѕРЅРєСѓСЂРµРЅС‚Р°С… С‚РѕС‡РєРё, РІ РєРѕРЅРєСѓСЂРµРЅС‚РЅРѕРј СЃСЂРµР·Рµ';
+COMMENT ON TABLE MOBILE.CS_SLICE_PR IS 'Записи ответственного точки о конкурентах точки, в конкурентном срезе';
 
 
 CREATE UNIQUE INDEX MOBILE.COMPET_SLICE_ACCOUNTS_PK ON MOBILE.CS_SLICE_PR

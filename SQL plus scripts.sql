@@ -1,1 +1,1 @@
-set serveroutput on -- for DBMS_OUTPUT
+set serveroutput on -- for DBMS_OUTPUT - Важная мелочь

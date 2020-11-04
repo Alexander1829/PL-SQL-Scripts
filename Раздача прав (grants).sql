@@ -1,6 +1,6 @@
 GRANT select ON scheme1.tab1 TO scheme2; 
 GRANT insert, update, delete ON scheme1.tab1 TO scheme2; 
-REVOKE insert, update, delete ON scheme1.tab1 FROM scheme2; /*Забрать права*/
+REVOKE insert, update, delete ON scheme1.tab1 FROM scheme2; /*Забрать права у схемы scheme2 на таблицу scheme1.tab1 */
 GRANT alter ON scheme1.tab1 TO scheme2; 
 GRANT all ON scheme1.tab1 TO scheme2; 
 GRANT execute ON scheme1.pkg1 TO scheme2;

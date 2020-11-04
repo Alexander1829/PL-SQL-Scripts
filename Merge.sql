@@ -1,6 +1,7 @@
+-- Обновим таблицу бонусов Bonuses по данным таблицы Employees, за один проход командой "MERGE"
 MERGE INTO bonuses D
    USING (SELECT employee_id, salary, department_id FROM employees
-   WHERE department_id = 80) S
+          WHERE department_id = 80) S
    ON (D.employee_id = S.employee_id)
    WHEN MATCHED THEN 
      UPDATE SET D.bonus = D.bonus + S.salary*.01
